@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from login import crear_ventana_registro, iniciar_sesion
-
+from usuarios import buscar_usuario
 
 def crear_pestana(ventana, nombre):
     pestaña = ttk.Frame(ventana)
@@ -19,7 +19,7 @@ def crear_pestana(ventana, nombre):
     elif nombre == "Usuarios":
         ttk.Label(pestaña, text="Buscar por ID:").grid(row=0, column=0, padx=10, pady=10)
         ttk.Entry(pestaña, textvariable=ID_var, state='normal').grid(row=0, column=1, padx=10, pady=10)
-        ttk.Button(pestaña, text="Buscar", command=lambda: buscar_usuario(id_entry, nombre_entry, apellidoP_entry, apellidoM_entry,
+        ttk.Button(pestaña, text="Buscar", command=lambda: buscar_usuario(ID_var, id_entry, nombre_entry, apellidoP_entry, apellidoM_entry,
                                                                           perfil_entry, telefono_entry, direccion_entry, usuario_entry, 
                                                                           contraseña_entry)).grid(row=0, column=2, pady=10)
 
@@ -61,67 +61,80 @@ def crear_pestana(ventana, nombre):
         contraseña_entry.grid(row=9, column=1, padx=10, pady=10)
 
 
-        ttk.Button(pestaña, text="Editar", command=lambda: print("Botón editar presionado")).grid(row=10, column=0, pady=10)
+        ttk.Button(pestaña, text="Editar", command=lambda: habilitar_edicion(id_entry, nombre_entry, apellidoP_entry, apellidoM_entry,
+                                                                           perfil_entry, telefono_entry, direccion_entry, usuario_entry, 
+                                                                           contraseña_entry)).grid(row=10, column=0, pady=10)
         ttk.Button(pestaña, text="Eliminar", command=lambda: print("Botón Eliminar presionado")).grid(row=10, column=1, pady=10)
-        ttk.Button(pestaña, text="Guardar", command=lambda: print("Botón guardar presionado")).grid(row=10, column=2, pady=10)
+        ttk.Button(pestaña, text="Guardar", command=lambda: guardar_cambios(ID_var, id_entry, nombre_entry, apellidoP_entry, apellidoM_entry,
+                                                                             perfil_entry, telefono_entry, direccion_entry, usuario_entry, 
+                                                                             contraseña_entry)).grid(row=10, column=2, pady=10)
 
             # Agrega más etiquetas, entradas y botones según tus necesidades
 
     controlador.add(pestaña, text=nombre)
 
-def buscar_usuario(id_entry, nombre_entry, apellidoP_entry, apellidoM_entry, perfil_entry, telefono_entry, direccion_entry, usuario_entry, contraseña_entry):
-    # Lee el archivo de texto (puedes cambiar el nombre y formato según tu necesidad)
+def habilitar_edicion(id_entry, nombre_entry, apellidoP_entry, apellidoM_entry, perfil_entry, telefono_entry, direccion_entry, usuario_entry, contraseña_entry):
+    id_entry.config(state='normal')
+    nombre_entry.config(state='normal')
+    apellidoP_entry.config(state='normal')
+    apellidoM_entry.config(state='normal')
+    perfil_entry.config(state='normal')
+    telefono_entry.config(state='normal')
+    direccion_entry.config(state='normal')
+    usuario_entry.config(state='normal')
+    contraseña_entry.config(state='normal')
+
+def guardar_cambios(ID_var, id_entry, nombre_entry, apellidoP_entry, apellidoM_entry, perfil_entry, telefono_entry, direccion_entry, usuario_entry, contraseña_entry):
+    # Leer el archivo de usuarios
     with open('usuarios.txt', 'r') as file:
-        for line in file:
-            data = line.strip().split(',')
-            if data[0] == ID_var.get():
-                # Rellena los campos con la información encontrada
-                id_entry.config(state='normal')
-                id_entry.delete(0, tk.END)
-                id_entry.insert(0, data[0])
-                id_entry.config(state='disabled')
+        lines = file.readlines()
 
-                nombre_entry.config(state='normal')
-                nombre_entry.delete(0, tk.END)
-                nombre_entry.insert(0, data[1])
-                nombre_entry.config(state='disabled')
+    # Buscar la línea correspondiente al ID_var
+    for i, line in enumerate(lines):
+        data = line.strip().split(',')
+        if data[0] == ID_var.get():
+            # Modificar los campos con los valores actuales
+            data[1] = nombre_entry.get()
+            data[2] = apellidoP_entry.get()
+            data[3] = apellidoM_entry.get()
+            data[4] = perfil_entry.get()
+            data[5] = telefono_entry.get()
+            data[6] = direccion_entry.get()
+            data[7] = usuario_entry.get()
+            data[8] = contraseña_entry.get()
+            lines[i] = ','.join(data) + '\n'
+            break
 
-                apellidoP_entry.config(state='normal')
-                apellidoP_entry.delete(0, tk.END)
-                apellidoP_entry.insert(0, data[2])
-                apellidoP_entry.config(state='disabled')
+    # Escribir las líneas modificadas de vuelta al archivo
+    with open('usuarios.txt', 'w') as file:
+        file.writelines(lines)
 
-                apellidoM_entry.config(state='normal')
-                apellidoM_entry.delete(0, tk.END)
-                apellidoM_entry.insert(0, data[3])
-                apellidoM_entry.config(state='disabled')
+    # Deshabilitar la edición después de guardar los cambios
+    id_entry.config(state='disabled')
+    nombre_entry.config(state='disabled')
+    apellidoP_entry.config(state='disabled')
+    apellidoM_entry.config(state='disabled')
+    perfil_entry.config(state='disabled')
+    telefono_entry.config(state='disabled')
+    direccion_entry.config(state='disabled')
+    usuario_entry.config(state='disabled')
+    contraseña_entry.config(state='disabled')
 
-                perfil_entry.config(state='normal')
-                perfil_entry.delete(0, tk.END)
-                perfil_entry.insert(0, data[4])
-                perfil_entry.config(state='disabled')
+    # Escribir las líneas modificadas de vuelta al archivo
+    with open('usuarios.txt', 'w') as file:
+        file.writelines(lines)
 
-                telefono_entry.config(state='normal')
-                telefono_entry.delete(0, tk.END)
-                telefono_entry.insert(0, data[5])
-                telefono_entry.config(state='disabled')
+    # Deshabilitar la edición después de guardar los cambios
+    id_entry.config(state='disabled')
+    nombre_entry.config(state='disabled')
+    apellidoP_entry.config(state='disabled')
+    apellidoM_entry.config(state='disabled')
+    perfil_entry.config(state='disabled')
+    telefono_entry.config(state='disabled')
+    direccion_entry.config(state='disabled')
+    usuario_entry.config(state='disabled')
+    contraseña_entry.config(state='disabled')
 
-                direccion_entry.config(state='normal')
-                direccion_entry.delete(0, tk.END)
-                direccion_entry.insert(0, data[6])
-                direccion_entry.config(state='disabled')
-
-                usuario_entry.config(state='normal')
-                usuario_entry.delete(0, tk.END)
-                usuario_entry.insert(0, data[7])
-                usuario_entry.config(state='disabled')
-
-                contraseña_entry.config(state='normal')
-                contraseña_entry.delete(0, tk.END)
-                contraseña_entry.insert(0, data[8])
-                contraseña_entry.config(state='disabled')
-                
-                break 
 
 # Crea la ventana principal
 ventana = tk.Tk()
