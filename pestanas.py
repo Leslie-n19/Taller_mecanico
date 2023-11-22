@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox
 from login import crear_ventana_registro, iniciar_sesion
 from usuarios import buscar_usuario, habilitar_edicion, guardar_cambios, eliminar_usuario
+from clientes import crear_ventana_registro
 
 def crear_pestana(ventana, nombre):
     pestaña = ttk.Frame(ventana)
@@ -71,9 +72,38 @@ def crear_pestana(ventana, nombre):
         ttk.Button(pestaña, text="Guardar", command=lambda: guardar_cambios(ID_var, id_entry, nombre_entry, apellidoP_entry, apellidoM_entry,
                                                                              perfil_entry, telefono_entry, direccion_entry, usuario_entry, 
                                                                              contraseña_entry)).grid(row=10, column=2, pady=10)
+    elif nombre == "Clientes":
+        ttk.Label(pestaña, text="Buscar por ID:").grid(row=0, column=0, padx=10, pady=10)
+        ttk.Entry(pestaña, textvariable=ID_var, state='normal').grid(row=0, column=1, padx=10, pady=10)
+        ttk.Button(pestaña, text="Buscar", command=lambda: buscar_usuario(ID_var, id_entry, nombre_entry, apellidoP_entry, apellidoM_entry,
+                                                                          perfil_entry)).grid(row=0, column=2, pady=10)
 
+
+        ttk.Label(pestaña, text="ID:").grid(row=1, column=0, padx=10, pady=10)
+        id_entry = ttk.Entry(pestaña, state='disabled', textvariable=tk.StringVar())
+        id_entry.grid(row=1, column=1, padx=10, pady=10)
+
+        ttk.Label(pestaña, text="Nombre:").grid(row=2, column=0, padx=10, pady=10)
+        nombre_entry = ttk.Entry(pestaña, state='disabled', textvariable=tk.StringVar())
+        nombre_entry.grid(row=2, column=1, padx=10, pady=10)
+
+        ttk.Label(pestaña, text="Apellido Paterno:").grid(row=3, column=0, padx=10, pady=10)
+        apellidoP_entry = ttk.Entry(pestaña, state='disabled', textvariable=tk.StringVar())
+        apellidoP_entry.grid(row=3, column=1, padx=10, pady=10)
+
+        ttk.Label(pestaña, text="Apellido Materno:").grid(row=4, column=0, padx=10, pady=10)
+        apellidoM_entry = ttk.Entry(pestaña, state='disabled', textvariable=tk.StringVar())
+        apellidoM_entry.grid(row=4, column=1, padx=10, pady=10)        
+
+        ttk.Button(pestaña, text="Editar", command=lambda: habilitar_edicion(id_entry, nombre_entry, apellidoP_entry, apellidoM_entry,
+                                                                           perfil_entry)).grid(row=10, column=0, pady=10)
+        ttk.Button(pestaña, text="Eliminar", command=lambda: eliminar_usuario(ID_var, id_entry, nombre_entry, apellidoP_entry, apellidoM_entry,
+                                                                     perfil_entry)).grid(row=10, column=1, pady=10)
+        ttk.Button(pestaña, text="Guardar", command=lambda: guardar_cambios(ID_var, id_entry, nombre_entry, apellidoP_entry, apellidoM_entry,
+                                                                             perfil_entry)).grid(row=10, column=2, pady=10)
+        ttk.Button(pestaña, text="Nuevo", command=lambda: crear_ventana_registro(ventana)).grid(row=10, column=3, pady=10)
             # Agrega más etiquetas, entradas y botones según tus necesidades
-
+    
     controlador.add(pestaña, text=nombre)
 
 # Crea la ventana principal
