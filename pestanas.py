@@ -6,6 +6,7 @@ from usuarios import buscar_usuario, habilitar_edicion, guardar_cambios, elimina
 from clientes import crear_ventana_registro_cliente, buscar_cliente, habilitar_edicion_cliente, guardar_cambios_cliente, eliminar_cliente
 from vehiculos import crear_ventana_registro_vehiculo, buscar_vehiculo, habilitar_edicion_vehiculo, guardar_cambios_vehiculo, eliminar_vehiculo
 from reparaciones import crear_ventana_registro_reparacion, buscar_reparacion, habilitar_edicion_reparacion, guardar_cambios_reparacion, eliminar_reparacion
+from piezas import crear_ventana_registro_pieza, buscar_pieza, habilitar_edicion_pieza, guardar_cambios_pieza, eliminar_pieza
 
 def crear_pestana(ventana, nombre):
     pestaña = ttk.Frame(ventana)
@@ -188,13 +189,36 @@ def crear_pestana(ventana, nombre):
         ttk.Button(pestaña, text="Guardar", command=lambda: guardar_cambios_reparacion(ID_var_repa, id_veh, id_pie, id_reparacion, fechaEn, 
                                                                                        fechaSal, falla, cantidad)).grid(row=7, column=2, pady=10)
         ttk.Button(pestaña, text="Nuevo", command=lambda: crear_ventana_registro_reparacion(ventana)).grid(row=7, column=3, pady=10)
+    elif nombre == "Piezas":
+        ttk.Label(pestaña, text="Buscar pieza por ID:").grid(row=0, column=0, padx=10, pady=10)
+        ttk.Entry(pestaña, textvariable=ID_var_pieza, state='normal').grid(row=0, column=1, padx=10, pady=10)
+        ttk.Button(pestaña, text="Buscar", command=lambda: buscar_pieza(ID_var_pieza, id_pieza, descripcion, 
+                                                                        stock)).grid(row=0, column=2, columnspan=2, pady=10)
+
+        ttk.Label(pestaña, text="Pieza ID:").grid(row=1, column=0, padx=10, pady=10)
+        id_pieza = ttk.Entry(pestaña, state='disabled', textvariable=tk.StringVar())
+        id_pieza.grid(row=1, column=1, padx=10, pady=10)
+
+        ttk.Label(pestaña, text="Descripción:").grid(row=2, column=0, padx=10, pady=10)
+        descripcion = ttk.Entry(pestaña, state='disabled', textvariable=tk.StringVar())
+        descripcion.grid(row=2, column=1, padx=10, pady=10)
+
+        ttk.Label(pestaña, text="Stock:").grid(row=2, column=2, padx=10, pady=10)
+        stock = ttk.Entry(pestaña, state='disabled', textvariable=tk.StringVar())
+        stock.grid(row=2, column=3, padx=10, pady=10)
+
+        ttk.Button(pestaña, text="Editar", command=lambda: habilitar_edicion_pieza(id_pieza, descripcion, stock)).grid(row=7, column=0, pady=10)
+        ttk.Button(pestaña, text="Eliminar", command=lambda: eliminar_pieza(ID_var_pieza, id_pieza, descripcion, stock)).grid(row=7, column=1, pady=10)
+        ttk.Button(pestaña, text="Guardar", command=lambda: guardar_cambios_pieza(ID_var_pieza, descripcion, 
+                                                                                  stock)).grid(row=7, column=2, pady=10)
+        ttk.Button(pestaña, text="Nuevo", command=lambda: crear_ventana_registro_pieza(ventana)).grid(row=7, column=3, pady=10)
             # Agrega más etiquetas, entradas y botones según tus necesidades
     
     controlador.add(pestaña, text=nombre)
 
 # Crea la ventana principal
 ventana = tk.Tk()
-ventana.title("Aplicación con Pestañas")
+ventana.title("Taller mecánico")
 
 # Crea el controlador de pestañas
 controlador = ttk.Notebook(ventana)
@@ -204,6 +228,7 @@ ID_var_cliente = tk.StringVar()
 ID_var = tk.StringVar()
 ID_var_vehiculo = tk.StringVar()
 ID_var_repa = tk.StringVar()
+ID_var_pieza = tk.StringVar()
 nombre_var = tk.StringVar()
 apellidoP_var = tk.StringVar()
 apellidoM_var = tk.StringVar()
