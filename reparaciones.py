@@ -153,3 +153,102 @@ def buscar_reparacion(ID_var_repa, id_veh, id_pie, id_reparacion, fechaEn, fecha
 
         if not usuario_encontrado:
                 messagebox.showinfo("Alerta", "Reparación no encontrada")
+
+def habilitar_edicion_reparacion(id_veh, id_pie, id_reparacion, fechaEn, fechaSal, falla, cantidad):
+    id_veh.config(state='normal') #ID externo
+    id_pie.config(state='normal')
+    id_reparacion.config(state='normal')
+    fechaEn.config(state='normal')
+    fechaSal.config(state='normal')
+    falla.config(state='normal')
+    cantidad.config(state='normal')
+
+def guardar_cambios_reparacion(ID_var_repa, id_veh, id_pie, id_reparacion, fechaEn, fechaSal, falla, cantidad):
+    # Leer el archivo de usuarios
+    with open('reparaciones.txt', 'r') as file:
+        lines = file.readlines()
+
+    # Buscar la línea correspondiente al ID_var
+    for i, line in enumerate(lines):
+        data = line.strip().split(',')
+        if data[0] == ID_var_repa.get():
+            # Modificar los campos con los valores actuales
+            data[1] = id_veh.get() #ID externo
+            data[2] = id_pie.get()
+            data[3] = fechaEn.get()
+            data[4] = fechaSal.get()
+            data[5] = falla.get()
+            data[6] = cantidad.get()
+            lines[i] = ','.join(data) + '\n'
+            break
+
+    # Escribir las líneas modificadas de vuelta al archivo
+    with open('reparaciones.txt', 'w') as file:
+        file.writelines(lines)
+
+    # Deshabilitar la edición después de guardar los cambios
+    id_veh.config(state='disabled') #Id externo
+    id_pie.config(state='disabled')
+    id_reparacion.config(state='disabled')
+    fechaEn.config(state='disabled')
+    fechaSal.config(state='disabled')
+    falla.config(state='disabled')
+    cantidad.config(state='disabled')
+
+    # Escribir las líneas modificadas de vuelta al archivo
+    with open('reparaciones.txt', 'w') as file:
+        file.writelines(lines)
+
+    # Deshabilitar la edición después de guardar los cambios
+    id_veh.config(state='disabled') #ID externo
+    id_pie.config(state='disabled')
+    id_reparacion.config(state='disabled')
+    fechaEn.config(state='disabled')
+    fechaSal.config(state='disabled')
+    falla.config(state='disabled')
+    cantidad.config(state='disabled')
+
+    messagebox.showinfo("Éxito", "Vehículo editado correctamente")
+
+def eliminar_reparacion(ID_var_repa, id_veh, id_pie, id_reparacion, fechaEn, fechaSal, falla, cantidad):
+    # Leer el archivo de usuarios
+    with open('reparaciones.txt', 'r') as file:
+        lines = file.readlines()
+
+    # Buscar la línea correspondiente al ID_var
+    for i, line in enumerate(lines):
+        data = line.strip().split(',')
+        if data[0] == ID_var_repa.get():
+            # Eliminar el usuario
+            del lines[i]
+            break
+    else:
+        # Si el bucle no se rompió, el usuario no se encontró
+        messagebox.showerror("Error", "No se pudo encontrar la reparación para eliminar")
+        return
+
+    # Escribir las líneas modificadas de vuelta al archivo
+    with open('reparaciones.txt', 'w') as file:
+        file.writelines(lines)
+
+    habilitar_edicion_reparacion(id_veh, id_pie, id_reparacion, fechaEn, fechaSal, falla, cantidad)
+
+    # Limpiar y deshabilitar los campos después de eliminar el usuario
+    id_veh.delete(0, tk.END)
+    id_pie.delete(0, tk.END)
+    id_reparacion.delete(0, tk.END)
+    fechaEn.delete(0, tk.END)
+    fechaSal.delete(0, tk.END)
+    falla.delete(0, tk.END)
+    cantidad.delete(0, tk.END)
+    
+    id_veh.config(state='disabled')
+    id_pie.config(state='disabled')
+    id_reparacion.config(state='disabled')
+    fechaEn.config(state='disabled')
+    fechaSal.config(state='disabled')
+    falla.config(state='disabled')
+    cantidad.config(state='disabled')
+    
+    # Mostrar ventana de alerta
+    messagebox.showinfo("Éxito", "Reparación eliminada correctamente")

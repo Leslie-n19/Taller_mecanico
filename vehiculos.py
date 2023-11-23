@@ -127,7 +127,7 @@ def buscar_vehiculo (ID_var_vehiculo, id_cli, id_vehiculo, matricula, fecha, mar
                 messagebox.showinfo("Alerta", "Vehículo no encontrado")
 
 def habilitar_edicion_vehiculo(id_cli, id_vehiculo, matricula, fecha, marca, modelo):
-    id_cli.config(state='normal')
+    id_cli.config(state='normal') #ID externo
     id_vehiculo.config(state='normal')
     matricula.config(state='normal')
     fecha.config(state='normal')
@@ -144,7 +144,7 @@ def guardar_cambios_vehiculo(ID_var_vehiculo, id_cli, id_vehiculo, matricula, fe
         data = line.strip().split(',')
         if data[0] == ID_var_vehiculo.get():
             # Modificar los campos con los valores actuales
-            data[1] = id_cli.get()
+            data[1] = id_cli.get() #ID externo
             data[2] = matricula.get()
             data[3] = fecha.get()
             data[4] = marca.get()
@@ -157,7 +157,7 @@ def guardar_cambios_vehiculo(ID_var_vehiculo, id_cli, id_vehiculo, matricula, fe
         file.writelines(lines)
 
     # Deshabilitar la edición después de guardar los cambios
-    id_cli.config(state='disabled')
+    id_cli.config(state='disabled') #Id externo
     id_vehiculo.config(state='disabled')
     matricula.config(state='disabled')
     fecha.config(state='disabled')
@@ -169,7 +169,7 @@ def guardar_cambios_vehiculo(ID_var_vehiculo, id_cli, id_vehiculo, matricula, fe
         file.writelines(lines)
 
     # Deshabilitar la edición después de guardar los cambios
-    id_cli.config(state='disabled')
+    id_cli.config(state='disabled') #ID externo
     id_vehiculo.config(state='disabled')
     matricula.config(state='disabled')
     fecha.config(state='disabled')
