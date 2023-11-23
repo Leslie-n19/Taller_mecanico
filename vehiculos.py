@@ -23,7 +23,7 @@ def crear_ventana_registro_vehiculo(ventana):
     ventana_registro.title("Registro de vehículo")
 
     # Variables para almacenar la información del nuevo usuario
-    ID_cli_var = tk.StringVar()
+    ID_cli_var = tk.StringVar() #ID externo
     matricula_var = tk.StringVar()
     fecha_var = tk.StringVar()
     marca_var = tk.StringVar()
@@ -33,20 +33,20 @@ def crear_ventana_registro_vehiculo(ventana):
     def guardar_usuario():
         global global_id  # Indica que estamos utilizando la variable global_id definida fuera de esta función
         # Obtener los valores de las variables
-        id_usuario = ID_cli_var.get()
+        id_cliente = ID_cli_var.get() #ID externo
         nombre = matricula_var.get()
         fecha = fecha_var.get()
         marca = marca_var.get()
         modelo = modelo_var.get()
 
         # Validar que se hayan ingresado todos los datos
-        if not id_usuario or not nombre or not fecha or not marca or not modelo:
+        if not id_cliente or not nombre or not fecha or not marca or not modelo:
             messagebox.showerror("Error", "Por favor, completa todos los campos.")
             return
         
         with open("vehiculos.txt", "a") as archivo:
             archivo.write(f"{global_id},")
-            archivo.write(f"{ID_cli_var.get()},")
+            archivo.write(f"{ID_cli_var.get()},") #ID externo
             archivo.write(f"{matricula_var.get()},")
             archivo.write(f"{fecha_var.get()},")
             archivo.write(f"{marca_var.get()},")
@@ -75,8 +75,8 @@ def crear_ventana_registro_vehiculo(ventana):
     ttk.Label(ventana_registro, text="Marca:").grid(row=3, column=0, padx=10, pady=10)
     ttk.Entry(ventana_registro, textvariable=marca_var).grid(row=3, column=1, padx=10, pady=10)
 
-    ttk.Label(ventana_registro, text="Modelo:").grid(row=4, column=0, padx=10, pady=10)
-    ttk.Entry(ventana_registro, textvariable=modelo_var).grid(row=4, column=1, padx=10, pady=10)
+    ttk.Label(ventana_registro, text="Modelo:").grid(row=3, column=2, padx=10, pady=10)
+    ttk.Entry(ventana_registro, textvariable=modelo_var).grid(row=3, column=1, padx=10, pady=10)
 
 
     ttk.Button(ventana_registro, text="Guardar", command=guardar_usuario).grid(row=5, column=0, columnspan=4, pady=10)
@@ -95,7 +95,7 @@ def buscar_vehiculo (ID_var_vehiculo, id_cli, id_vehiculo, matricula, fecha, mar
                 id_vehiculo.insert(0, data[0])
                 id_vehiculo.config(state='disabled')
 
-                id_cli.config(state='normal')
+                id_cli.config(state='normal') #ID externo
                 id_cli.delete(0, tk.END)
                 id_cli.insert(0, data[1])
                 id_cli.config(state='disabled')
