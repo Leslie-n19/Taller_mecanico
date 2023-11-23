@@ -4,7 +4,7 @@ from tkinter import messagebox
 from login import crear_ventana_registro, iniciar_sesion
 from usuarios import buscar_usuario, habilitar_edicion, guardar_cambios, eliminar_usuario
 from clientes import crear_ventana_registro_cliente, buscar_cliente, habilitar_edicion_cliente, guardar_cambios_cliente, eliminar_cliente
-from vehiculos import crear_ventana_registro_vehiculo, buscar_vehiculo, habilitar_edicion_vehiculo, guardar_cambios_vehiculo
+from vehiculos import crear_ventana_registro_vehiculo, buscar_vehiculo, habilitar_edicion_vehiculo, guardar_cambios_vehiculo, eliminar_vehiculo
 
 def crear_pestana(ventana, nombre):
     pestaña = ttk.Frame(ventana)
@@ -141,8 +141,8 @@ def crear_pestana(ventana, nombre):
 
         ttk.Button(pestaña, text="Editar", command=lambda: habilitar_edicion_vehiculo(id_cli, id_vehiculo, matricula, 
                                                                                       fecha, marca, modelo)).grid(row=7, column=0, pady=10)
-        ttk.Button(pestaña, text="Eliminar", command=lambda: eliminar_cliente(ID_var_vehiculo, id_cli, id_vehiculo, matricula, 
-                                                                              fecha, marca, modelo)).grid(row=7, column=1, pady=10)
+        ttk.Button(pestaña, text="Eliminar", command=lambda: eliminar_vehiculo(ID_var_vehiculo, id_cli, id_vehiculo, matricula, 
+                                                                               fecha, marca, modelo)).grid(row=7, column=1, pady=10)
         ttk.Button(pestaña, text="Guardar", command=lambda: guardar_cambios_vehiculo(ID_var_vehiculo, id_cli, id_vehiculo, matricula, 
                                                                                      fecha, marca, modelo)).grid(row=7, column=2, pady=10)
         ttk.Button(pestaña, text="Nuevo", command=lambda: crear_ventana_registro_vehiculo(ventana)).grid(row=7, column=3, pady=10)

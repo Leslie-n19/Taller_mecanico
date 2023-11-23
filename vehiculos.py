@@ -177,3 +177,44 @@ def guardar_cambios_vehiculo(ID_var_vehiculo, id_cli, id_vehiculo, matricula, fe
     modelo.config(state='disabled')
 
     messagebox.showinfo("Éxito", "Vehículo editado correctamente")
+
+def eliminar_vehiculo(ID_var_vehiculo, id_cli, id_vehiculo, matricula, fecha, marca, modelo):
+    # Leer el archivo de usuarios
+    with open('vehiculos.txt', 'r') as file:
+        lines = file.readlines()
+
+    # Buscar la línea correspondiente al ID_var
+    for i, line in enumerate(lines):
+        data = line.strip().split(',')
+        if data[0] == ID_var_vehiculo.get():
+            # Eliminar el usuario
+            del lines[i]
+            break
+    else:
+        # Si el bucle no se rompió, el usuario no se encontró
+        messagebox.showerror("Error", "No se pudo encontrar el vehículo para eliminar")
+        return
+
+    # Escribir las líneas modificadas de vuelta al archivo
+    with open('vehiculos.txt', 'w') as file:
+        file.writelines(lines)
+
+    habilitar_edicion_vehiculo(id_cli, id_vehiculo, matricula, fecha, marca, modelo)
+
+    # Limpiar y deshabilitar los campos después de eliminar el usuario
+    id_cli.delete(0, tk.END)
+    id_vehiculo.delete(0, tk.END)
+    matricula.delete(0, tk.END)
+    fecha.delete(0, tk.END)
+    marca.delete(0, tk.END)
+    modelo.delete(0, tk.END)
+    
+    id_cli.config(state='disabled')
+    id_vehiculo.config(state='disabled')
+    matricula.config(state='disabled')
+    fecha.config(state='disabled')
+    marca.config(state='disabled')
+    modelo.config(state='disabled')
+    
+    # Mostrar ventana de alerta
+    messagebox.showinfo("Éxito", "Vehículo eliminado correctamente")
